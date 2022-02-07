@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App {
+  text-align: center;
+}
+
+#playing-area {
+  background-color: cadetblue;
+  border: 5px solid black;
+}
+
+.player {
+  background-color: brown;
+  border: 1px solid yellow;
+  border-radius: 100%;
+}
+
+.obstacle {
+  background-color: darkblue;
+}

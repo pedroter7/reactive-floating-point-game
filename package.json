@@ -2,6 +2,12 @@
   "name": "reactive-floating-point-game",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Pedro Tersetti Freidinger",
+    "email": "pedrotersetti3@gmail.com",
+    "url": "https://github.com/pedroter7"
+  },
+  "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
