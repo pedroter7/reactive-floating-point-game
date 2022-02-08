@@ -3,13 +3,14 @@ import '../styles/App.css';
 import PlayingArea from './PlayingArea';
 import WelcomeScreen from './WelcomeScreen';
 import Game from './Game';
+import Observable from '../logic/Observable';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      playing: false
+      gameRunning: false
     }
     this.screenWidth = window.screen.width;
     this.screenHeight = window.screen.height;
@@ -19,10 +20,20 @@ class App extends React.Component {
     this.buildGame = this.buildGame.bind(this);
     this.buildWelcomeScreen = this.buildWelcomeScreen.bind(this);
     this.doPlay = this.doPlay.bind(this);
+    this.getGameRunning = this.getGameRunning.bind(this);
+    this.onGameOver = this.onGameOver.bind(this);
+  }
+
+  getGameRunning() {
+    return this.state.gameRunning;
   }
 
   buildGame() {
-    return (<Game playingAreaWidth={this.playingAreaWidth} playingAreaHeight={this.playingAreaHeight} />);
+    return (<Game playingAreaWidth={this.playingAreaWidth} 
+                  playingAreaHeight={this.playingAreaHeight} 
+                  getGameRunning={this.getGameRunning}
+                  onGameOver={this.onGameOver}
+                  gameOverObservable={this.gameOverObservable} />);
   }
 
   buildWelcomeScreen() {
@@ -30,7 +41,12 @@ class App extends React.Component {
   }
 
   doPlay() {
-    this.setState({playing: true});
+    this.setState({gameRunning: true});
+  }
+
+  onGameOver() {
+    console.log("GameOver!");
+    // this.setState({gameRunning: false});
   }
 
   render() {
@@ -40,7 +56,7 @@ class App extends React.Component {
           width={this.playingAreaWidth}
           height={this.playingAreaHeight}>
 
-          {this.state.playing 
+          {this.state.gameRunning 
             ? this.buildGame() 
             : this.buildWelcomeScreen()
           }

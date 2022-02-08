@@ -12,8 +12,7 @@ class Obstacle extends React.Component {
             height: `${this.props.height}px`,
             position: 'absolute',
             top: `${this.props.y}px`,
-            left: `${this.props.x}px`,
-            transform: 'translateY(-100%)'
+            left: `${this.props.x}px`
         }
 
         return (
