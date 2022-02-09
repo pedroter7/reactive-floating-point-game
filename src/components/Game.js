@@ -2,12 +2,10 @@ import React from "react";
 import Player from "./Player";
 import { playerNextPosition } from "../logic/playerRules";
 import ObstaclesBelt from "./ObstaclesBelt";
-import { checkPlayerCollision, updateCollisionArea, registerPlayerCollisionObserver, unregisterPlayerCollisionObserver } from "../logic/collisions";
-import ObstacleGenerator from "../logic/ObstacleGenerator";
+import { checkPlayerCollision, updateCollisionArea, registerPlayerCollisionObserver, unregisterPlayerCollisionObserver, clearCollisionArea } from "../logic/collisions";
+import ObstacleController from "../logic/obstacleModel";
 
 class Game extends React.Component {
-
-    static zIndex = 0;
 
     constructor(props) {
         super(props);
@@ -16,7 +14,8 @@ class Game extends React.Component {
                 x: Math.floor(this.props.playingAreaWidth/2),
                 y: Math.floor(this.props.playingAreaHeight/2)
             },
-            paused: false
+            paused: false,
+            playerScore: 0
         }
         this.playerDiameter = 15;
         this.playerDimensions = {
@@ -26,9 +25,14 @@ class Game extends React.Component {
             width: this.props.playingAreaWidth,
             height: this.props.playingAreaHeight
         }
-        this.obstacleGenerator = new ObstacleGenerator(this.playingAreaDimensions);
+        this.obstacleController = ObstacleController.getInstance(this.playingAreaDimensions);
 
         updateCollisionArea(this.state.playerPosition, this.playerDimensions);
+
+        if (props.gameIsRestarting) {
+            clearCollisionArea();
+            this.obstacleController.clear();
+        }
 
         this.onPlayerMoveDown = this.onPlayerMoveDown.bind(this);
         this.onPlayerMoveUp = this.onPlayerMoveUp.bind(this);
@@ -37,7 +41,6 @@ class Game extends React.Component {
         this.onKeydown = this.onKeydown.bind(this);
         this.testPlayerCollision = this.testPlayerCollision.bind(this);
         this.playerCollisionObserver = this.playerCollisionObserver.bind(this);
-
     }
 
     componentDidMount() {
@@ -74,7 +77,7 @@ class Game extends React.Component {
     }
 
     testPlayerCollision(playerPosition) {
-        checkPlayerCollision(playerPosition, this.playerDimensions);
+        return checkPlayerCollision(playerPosition, this.playerDimensions);
     }
 
     onPlayerMoveUp() {
@@ -87,7 +90,7 @@ class Game extends React.Component {
 
     onObstaclesBeltMove() {
         updateCollisionArea(this.state.playerPosition, this.playerDimensions);
-        this.testPlayerCollision(this.state.playerPosition);
+        const collided = this.testPlayerCollision(this.state.playerPosition);
     }
 
     render() {
@@ -95,12 +98,13 @@ class Game extends React.Component {
             <div width={`${this.props.playingAreaWidth}px`} 
                 height={`${this.props.playingAreaHeight}px`} 
                 style={{position:'relative', margin: 0}} >
-                <ObstaclesBelt obstacleGenerator={this.obstacleGenerator}
+                <ObstaclesBelt obstacleController={this.obstacleController}
                     onBeltMove={this.onObstaclesBeltMove}
                     size={this.props.playingAreaWidth}
                     speed={{ms: 100, step: 10}}
                     moving={this.props.getGameRunning() && !this.state.paused}
-                    newObstacleInterval={1500} />
+                    newObstacleInterval={1500}
+                    interestPoint={{x: this.state.playerPosition.x}} />
                 <Player x={this.state.playerPosition.x}
                     y={this.state.playerPosition.y}
                     diameter={this.playerDiameter}

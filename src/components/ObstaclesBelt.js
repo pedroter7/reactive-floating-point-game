@@ -4,9 +4,6 @@ import Obstacle from "./Obstacle";
 
 class ObstaclesBelt extends React.Component {
 
-    static keyN = 0;
-    static obstacles = [];
-
     constructor(props) {
         super(props);
         this.state = {
@@ -14,17 +11,12 @@ class ObstaclesBelt extends React.Component {
         };
 
         this.move = this.move.bind(this);
-        this.getNewObstacle = this.getNewObstacle.bind(this);
-        this.clearObstacles = this.clearObstacles.bind(this);
-    }
-
-    clearObstacles() {
-        ObstaclesBelt.obstacles.length = 0;
+        this.newObstacle = this.newObstacle.bind(this);
     }
 
     componentDidMount() {
         this.moveInterval = setInterval(this.move, this.state.speed.ms, this.state.speed.step);
-        this.newObstacleInterval = setInterval(this.getNewObstacle, this.props.newObstacleInterval);
+        this.newObstacleInterval = setInterval(this.newObstacle, this.props.newObstacleInterval);
     }
 
     componentWillUnmount() {
@@ -34,46 +26,52 @@ class ObstaclesBelt extends React.Component {
 
     move(step) {
         if (this.props.moving) {
-            for (let i = 0; i < ObstaclesBelt.obstacles.length; ++i) {
-                const obstacle = ObstaclesBelt.obstacles[i];
+            const obstaclesArray = this.props.obstacleController.getAll();
+            let passedInterestPoint = 0;
+            for (let i = 0; i < obstaclesArray.length; ++i) {
+                const obstacle = obstaclesArray[i];
                 obstacle.x -= step;
                 if (obstacle.x < 0 && obstacle.width + obstacle.x > 0) {
                     obstacle.width += obstacle.x;
                     obstacle.x = 0;
                 } else if (obstacle.x < 0) {
-                    ObstaclesBelt.obstacles.splice(i--, 1);
+                    this.props.obstacleController.remove(i);
                     continue;
                 }
-                insertOrRemoveFromCollisionAreaIfNeeded(obstacle.key, {
+                this.props.obstacleController.update(i, obstacle);
+                insertOrRemoveFromCollisionAreaIfNeeded(obstacle.id, {
                     x1: obstacle.x,
                     x2: obstacle.x + obstacle.width,
                     y1: obstacle.y,
                     y2: obstacle.y + obstacle.height
                 });
             }
-            this.props.onBeltMove();
+            this.props.onBeltMove({interestPoint: {x: this.props.interestPoint, passed: passedInterestPoint}});
             this.forceUpdate();
         }
     }
 
-    getNewObstacle() {
+    newObstacle() {
         if (this.props.moving) {
-            const newObstacle = this.props.obstacleGenerator.generate();
-            newObstacle.key = ObstaclesBelt.keyN++;
+            const idx = this.props.obstacleController.generate();
+            const newObstacle = this.props.obstacleController.get(idx);
             newObstacle.x = this.props.size - newObstacle.width;
-            ObstaclesBelt.obstacles.push(newObstacle);
+            this.props.obstacleController.update(idx, newObstacle);
         }
     }
 
     render() {
+
+        const obstaclesArray = this.props.obstacleController.getAll();
+
         return (<div id="obstacles-belt">
             {
-                ObstaclesBelt.obstacles.map(o => <Obstacle width={o.width}
+                obstaclesArray.map(o => <Obstacle width={o.width}
                     height={o.height}
                     y={o.y}
                     x={o.x}
                     cssTransform={o.cssTransform}
-                    key={o.key} />)
+                    key={o.id} />)
             }
         </div>);
     }

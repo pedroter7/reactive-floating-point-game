@@ -55,6 +55,10 @@ function updateCollisionArea(playerPosition, playerDimensions) {
     collisionArea.y2 = playerPosition.y + playerDimensions.radius*5;
 }
 
+function clearCollisionArea() {
+    objectsWithinCollisionArea.clear();
+}
+
 function insertOrRemoveFromCollisionAreaIfNeeded(objectKey, objDimensions) {
     if (axisAlignedBoundingBoxCollision(collisionArea, objDimensions))
         objectsWithinCollisionArea.set(objectKey, objDimensions);
@@ -67,5 +71,6 @@ export {
     updateCollisionArea,
     insertOrRemoveFromCollisionAreaIfNeeded,
     registerPlayerCollisionObserver,
-    unregisterPlayerCollisionObserver
+    unregisterPlayerCollisionObserver,
+    clearCollisionArea
 };
