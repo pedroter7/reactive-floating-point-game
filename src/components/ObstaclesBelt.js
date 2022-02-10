@@ -27,16 +27,23 @@ class ObstaclesBelt extends React.Component {
     move(step) {
         if (this.props.moving) {
             const obstaclesArray = this.props.obstacleController.getAll();
-            let passedInterestPoint = 0;
             for (let i = 0; i < obstaclesArray.length; ++i) {
                 const obstacle = obstaclesArray[i];
                 obstacle.x -= step;
-                if (obstacle.x < 0 && obstacle.width + obstacle.x > 0) {
-                    obstacle.width += obstacle.x;
-                    obstacle.x = 0;
-                } else if (obstacle.x < 0) {
-                    this.props.obstacleController.remove(i);
-                    continue;
+                if (obstacle.x < 0) {
+                    if (obstacle.width + obstacle.x > 0) {
+                        obstacle.width += obstacle.x;
+                        obstacle.x = 0;
+                    } else {
+                        this.props.obstacleController.remove(i);
+                        continue;
+                    }
+                } else if (obstacle.x + obstacle.maxWidth > this.props.size) {
+                    if (this.props.size - obstacle.x > obstacle.maxWidth)
+                        obstacle.width = obstacle.maxWidth;
+                    else obstacle.width = this.props.size - obstacle.x;
+                } else {
+                    obstacle.width = obstacle.maxWidth;
                 }
                 this.props.obstacleController.update(i, obstacle);
                 insertOrRemoveFromCollisionAreaIfNeeded(obstacle.id, {
@@ -46,7 +53,7 @@ class ObstaclesBelt extends React.Component {
                     y2: obstacle.y + obstacle.height
                 });
             }
-            this.props.onBeltMove({interestPoint: {x: this.props.interestPoint, passed: passedInterestPoint}});
+            this.props.onBeltMove();
             this.forceUpdate();
         }
     }
@@ -55,7 +62,9 @@ class ObstaclesBelt extends React.Component {
         if (this.props.moving) {
             const idx = this.props.obstacleController.generate();
             const newObstacle = this.props.obstacleController.get(idx);
-            newObstacle.x = this.props.size - newObstacle.width;
+            newObstacle.x = this.props.size + newObstacle.width;
+            newObstacle.maxWidth = newObstacle.width;
+            newObstacle.width = 0;
             this.props.obstacleController.update(idx, newObstacle);
         }
     }

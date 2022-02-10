@@ -6,10 +6,23 @@ class GameOverScreen extends React.Component {
         super(props);
 
         this.onGameRestart = this.onGameRestart.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
 
     onGameRestart(e) {
         this.props.onGameRestart();
+    }
+
+    handleKeyDown(e) {
+        if (e.code == 'Enter') this.onGameRestart();
+    }
+
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     render() {

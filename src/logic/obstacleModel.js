@@ -1,3 +1,5 @@
+import { binarySearch } from "../common/algorithm";
+
 class ObstacleModel {
 
     constructor() {
@@ -33,7 +35,7 @@ class ObstacleController {
         const height = Math.floor(this.playingAreaDimensions.height/3);
         const newObstacle = {
             height,
-            width: 50,
+            width: 40,
             y: 180,
             id: this._model.idCounter++
         };
@@ -45,7 +47,7 @@ class ObstacleController {
     }
 
     remove(index) {
-        this._model.obstacles.slice(index, 1);
+        this._model.obstacles.splice(index, 1);
     }
 
     getAll() {
@@ -54,6 +56,10 @@ class ObstacleController {
 
     get(idx) {
         return this._model.obstacles[idx];
+    }
+
+    findById(id) {
+        return binarySearch(this._model.obstacles, id, "id");
     }
 
     update(index, obstacle) {

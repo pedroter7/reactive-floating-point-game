@@ -4,6 +4,8 @@ import PlayingArea from './PlayingArea';
 import WelcomeScreen from './WelcomeScreen';
 import Game from './Game';
 import GameOverScreen from './GameOverScreen';
+import ScoreCounter from './ScoreCounter';
+import Observable from '../logic/Observable';
 
 class CurrentScreenEnum {
 
@@ -27,6 +29,8 @@ class App extends React.Component {
     this.playingAreaWidth = Math.floor(this.screenWidth*0.85);
     this.playingAreaHeight = Math.floor(this.screenHeight/2);
 
+    this.scoreObservable = new Observable();
+
     this.buildGame = this.buildGame.bind(this);
     this.buildWelcomeScreen = this.buildWelcomeScreen.bind(this);
     this.doPlay = this.doPlay.bind(this);
@@ -34,6 +38,7 @@ class App extends React.Component {
     this.onGameOver = this.onGameOver.bind(this);
     this.buildGameOverScreen = this.buildGameOverScreen.bind(this);
     this.onGameRestart = this.onGameRestart.bind(this);
+    this.onScoreUpdate = this.onScoreUpdate.bind(this);
   }
 
   getGameRunning() {
@@ -46,7 +51,8 @@ class App extends React.Component {
                   getGameRunning={this.getGameRunning}
                   onGameOver={this.onGameOver}
                   gameRestartObservable={this.gameRestartObservable}
-                  gameIsRestarting={this.state.gameIsRestarting} />);
+                  gameIsRestarting={this.state.gameIsRestarting}
+                  onScoreUpdate={this.onScoreUpdate} />);
   }
 
   buildWelcomeScreen() {
@@ -62,13 +68,15 @@ class App extends React.Component {
   }
 
   onGameOver() {
-    console.log("GameOver!");
     this.setState({gameRunning: false, currentScreen: CurrentScreenEnum.GAMEOVER_SCREEN});
   }
 
   onGameRestart() {
-    console.log("Game restart!");
     this.doPlay(true);
+  }
+
+  onScoreUpdate(newScore) {
+    this.scoreObservable.notifyObservers({newScore});
   }
 
   render() {
@@ -89,6 +97,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
+        <ScoreCounter scoreObservable={this.scoreObservable} />
         <PlayingArea
           width={this.playingAreaWidth}
           height={this.playingAreaHeight}>
