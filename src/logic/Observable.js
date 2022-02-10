@@ -10,7 +10,7 @@ export default class Observable {
     }
 
     registerObserver(observerFunction) {
-        return this._observers.push(observerFunction);
+        return this._observers.push(observerFunction) - 1;
     }
 
     unregisterObserver(observerId) {
