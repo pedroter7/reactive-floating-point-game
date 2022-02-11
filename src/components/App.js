@@ -1,11 +1,22 @@
+/**
+ * This file is part of the Reactive Floating Point Game Project.
+ * 
+ * The project is licensend under the MIT Open Source License.
+ * 
+ * Project repository: https://github.com/pedroter7/reactive-floating-point-game
+ * 
+ * Author: Pedro T Freidinger
+ */
+
 import React from 'react';
 import '../styles/App.css';
 import PlayingArea from './PlayingArea';
 import WelcomeScreen from './WelcomeScreen';
 import Game from './Game';
 import GameOverScreen from './GameOverScreen';
-import ScoreCounter from './ScoreCounter';
 import Observable from '../logic/Observable';
+import MatchStats from './MatchStats';
+import Credits from './Credits';
 
 class CurrentScreenEnum {
 
@@ -30,8 +41,9 @@ class App extends React.Component {
     this.playingAreaHeight = Math.floor(this.screenHeight/2);
 
     this.scoreObservable = new Observable();
+    this.difficultyObservable = new Observable();
 
-    this.buildGame = this.buildGame.bind(this);
+    this.buildGame = this.buildGameComponent.bind(this);
     this.buildWelcomeScreen = this.buildWelcomeScreen.bind(this);
     this.doPlay = this.doPlay.bind(this);
     this.getGameRunning = this.getGameRunning.bind(this);
@@ -39,20 +51,26 @@ class App extends React.Component {
     this.buildGameOverScreen = this.buildGameOverScreen.bind(this);
     this.onGameRestart = this.onGameRestart.bind(this);
     this.onScoreUpdate = this.onScoreUpdate.bind(this);
+    this.onDifficultyChange = this.onDifficultyChange.bind(this);
   }
 
   getGameRunning() {
     return this.state.gameRunning;
   }
 
-  buildGame() {
+  onDifficultyChange(newDifficulty) {
+    this.difficultyObservable.notifyObservers({difficulty: newDifficulty});
+  }
+
+  buildGameComponent() {
     return (<Game playingAreaWidth={this.playingAreaWidth} 
                   playingAreaHeight={this.playingAreaHeight} 
                   getGameRunning={this.getGameRunning}
                   onGameOver={this.onGameOver}
                   gameRestartObservable={this.gameRestartObservable}
                   gameIsRestarting={this.state.gameIsRestarting}
-                  onScoreUpdate={this.onScoreUpdate} />);
+                  onScoreUpdate={this.onScoreUpdate}
+                  onDifficultyChange={this.onDifficultyChange} />);
   }
 
   buildWelcomeScreen() {
@@ -87,7 +105,7 @@ class App extends React.Component {
         currentScreen = this.buildWelcomeScreen();
         break;
       case CurrentScreenEnum.GAME_SCREEN:
-        currentScreen = this.buildGame();
+        currentScreen = this.buildGameComponent();
         break;
       case CurrentScreenEnum.GAMEOVER_SCREEN:
         currentScreen = this.buildGameOverScreen();
@@ -97,7 +115,9 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <ScoreCounter scoreObservable={this.scoreObservable} />
+        <MatchStats scoreObservable={this.scoreObservable}
+          difficultyObservable={this.difficultyObservable}
+          width={this.playingAreaWidth} />
         <PlayingArea
           width={this.playingAreaWidth}
           height={this.playingAreaHeight}>
@@ -105,6 +125,7 @@ class App extends React.Component {
             {currentScreen}
 
         </PlayingArea>
+        <Credits />
       </div>
     );
   }

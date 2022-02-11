@@ -1,14 +1,25 @@
+/**
+ * This file is part of the Reactive Floating Point Game Project.
+ * 
+ * The project is licensend under the MIT Open Source License.
+ * 
+ * Project repository: https://github.com/pedroter7/reactive-floating-point-game
+ * 
+ * Author: Pedro T Freidinger
+ */
+
+const PLAYER_VERTICAL_STEP = 15; // px
+
 function playerNextPosition(currentPosition, moveType, playerDimensions, playingAreaDimensions) {
-    const step = 15;
     const nextPosition = {
         x: currentPosition.x
     }
     switch (moveType.toUpperCase()) {
         case 'UP':
-            nextPosition.y = currentPosition.y - step;
+            nextPosition.y = currentPosition.y - PLAYER_VERTICAL_STEP;
             break;
         case 'DOWN':
-            nextPosition.y = currentPosition.y + step;
+            nextPosition.y = currentPosition.y + PLAYER_VERTICAL_STEP;
             break;
         default:
             nextPosition.y = currentPosition.y;
@@ -30,5 +41,6 @@ function movementOutOfBounds(nextPosition, playerDimensions, playingAreaDimensio
 }
 
 export {
-    playerNextPosition
+    playerNextPosition,
+    PLAYER_VERTICAL_STEP
 };

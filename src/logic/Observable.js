@@ -1,4 +1,16 @@
-// Generic observable for the observer pattern
+/**
+ * This file is part of the Reactive Floating Point Game Project.
+ * 
+ * The project is licensend under the MIT Open Source License.
+ * 
+ * Project repository: https://github.com/pedroter7/reactive-floating-point-game
+ * 
+ * Author: Pedro T Freidinger
+ */
+
+/**
+ * A generic implementation of an observable for the observer pattern.
+ */
 export default class Observable {
 
     constructor() {

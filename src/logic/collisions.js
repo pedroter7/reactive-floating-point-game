@@ -1,3 +1,24 @@
+/**
+ * This file is part of the Reactive Floating Point Game Project.
+ * 
+ * The project is licensend under the MIT Open Source License.
+ * 
+ * Project repository: https://github.com/pedroter7/reactive-floating-point-game
+ * 
+ * Author: Pedro T Freidinger
+ */
+
+/**
+ * This file describes the collision engine for the game.
+ * 
+ * The 2D collision method implemented is the Axis Alligned
+ * Bound Box and every object is treated as a rectangle.
+ * 
+ * Since the game doesn't use a 2D mesh, a collision area
+ * is used to keep track of the objects that are relatively
+ * near the player in a given moment.
+ */
+
 import Observable from "./Observable";
 
 const objectsWithinCollisionArea = new Map(); // object key:object dimensions

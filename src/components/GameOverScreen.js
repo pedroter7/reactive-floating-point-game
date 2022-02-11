@@ -1,3 +1,13 @@
+/**
+ * This file is part of the Reactive Floating Point Game Project.
+ * 
+ * The project is licensend under the MIT Open Source License.
+ * 
+ * Project repository: https://github.com/pedroter7/reactive-floating-point-game
+ * 
+ * Author: Pedro T Freidinger
+ */
+
 import React from "react";
 
 class GameOverScreen extends React.Component {

@@ -1,10 +1,21 @@
+/**
+ * This file is part of the Reactive Floating Point Game Project.
+ * 
+ * The project is licensend under the MIT Open Source License.
+ * 
+ * Project repository: https://github.com/pedroter7/reactive-floating-point-game
+ * 
+ * Author: Pedro T Freidinger
+ */
+
 import React from "react";
 import Player from "./Player";
-import { playerNextPosition } from "../logic/playerRules";
+import { playerNextPosition, PLAYER_VERTICAL_STEP } from "../logic/playerRules";
 import ObstaclesBelt from "./ObstaclesBelt";
 import { checkPlayerCollision, updateCollisionArea, registerPlayerCollisionObserver, unregisterPlayerCollisionObserver, clearCollisionArea } from "../logic/collisions";
 import ObstacleController from "../logic/obstacleModel";
 import PlayerScoreController from "../logic/playerScoreModel";
+import { DifficultyEnum, getDifficulty } from "../logic/difficultyRules";
 
 class Game extends React.Component {
 
@@ -16,7 +27,8 @@ class Game extends React.Component {
                 y: Math.floor(this.props.playingAreaHeight/2)
             },
             paused: false,
-            playerScore: 0
+            playerScore: 0,
+            difficulty: DifficultyEnum.EASY
         }
         this.playerDiameter = 15;
         this.playerDimensions = {
@@ -26,7 +38,24 @@ class Game extends React.Component {
             width: this.props.playingAreaWidth,
             height: this.props.playingAreaHeight
         }
-        this.obstacleController = ObstacleController.getInstance(this.playingAreaDimensions);
+
+        // Obstacles configuration
+        this.obstacleMovementSpeed = {
+            ms: 10,
+            step: 1
+        };
+        this.obstacleGenerationFrequency = 1700; // ms
+        this.obstacleController = ObstacleController.getInstance();
+        this.obstacleController.configureObstacleGeneration({ 
+            playingAreaDimensions: this.playingAreaDimensions, 
+            obstacleMovementSpeed: this.obstacleMovementSpeed.step/this.obstacleMovementSpeed.ms, 
+            obstacleGenerationFrequency: this.obstacleGenerationFrequency, 
+            playerMovementStep: PLAYER_VERTICAL_STEP, 
+            difficulty: this.state.difficulty, 
+            width: 50 });
+
+        this.props.onDifficultyChange(this.state.difficulty);
+
         this.playerScoreController = PlayerScoreController.getInstance(this.obstacleController);
 
         updateCollisionArea(this.state.playerPosition, this.playerDimensions);
@@ -98,7 +127,12 @@ class Game extends React.Component {
         if (!collided) {
             const newScore = this.playerScoreController.updateScore(this.state.playerPosition);
             if (newScore != this.state.playerScore) {
-                this.setState({playerScore: newScore});
+                const difficulty = getDifficulty(newScore);
+                if (difficulty != this.state.difficulty) {
+                    this.obstacleController.updateObstacleGenerationDifficulty(difficulty);
+                    this.props.onDifficultyChange(difficulty);
+                }
+                this.setState({playerScore: newScore, difficulty});
                 this.props.onScoreUpdate(newScore);
             }
         }
@@ -112,9 +146,9 @@ class Game extends React.Component {
                 <ObstaclesBelt obstacleController={this.obstacleController}
                     onBeltMove={this.onObstaclesBeltMove}
                     size={this.props.playingAreaWidth}
-                    speed={{ms: 10, step: 1}}
+                    speed={this.obstacleMovementSpeed}
                     moving={this.props.getGameRunning() && !this.state.paused}
-                    newObstacleInterval={2400} />
+                    newObstacleInterval={this.obstacleGenerationFrequency} />
                 <Player x={this.state.playerPosition.x}
                     y={this.state.playerPosition.y}
                     diameter={this.playerDiameter}

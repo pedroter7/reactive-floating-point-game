@@ -1,3 +1,13 @@
+/**
+ * This file is part of the Reactive Floating Point Game Project.
+ * 
+ * The project is licensend under the MIT Open Source License.
+ * 
+ * Project repository: https://github.com/pedroter7/reactive-floating-point-game
+ * 
+ * Author: Pedro T Freidinger
+ */
+
 function binarySearch(array, target, property=null) {
     let left = 0;
     let right = array.length - 1;
@@ -25,6 +35,12 @@ function compare(array, index, target, property=null) {
     }
 }
 
+const randomInt = (min,max) => Math.round(randomFloat(min,max));
+
+const randomFloat = (min,max) => Math.random() * (max-min) + min;
+
 export {
-    binarySearch
+    binarySearch,
+    randomInt,
+    randomFloat
 };
