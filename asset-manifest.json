@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/reactive-floating-point-game/static/css/main.f17892f7.css",
+    "main.js": "/reactive-floating-point-game/static/js/main.2400a491.js",
+    "static/media/exmouth_.ttf": "/reactive-floating-point-game/static/media/exmouth_.0f90ba29d1508f44d398.ttf",
+    "static/media/ka1.ttf": "/reactive-floating-point-game/static/media/ka1.5df8cd545dcd2db2bf8b.ttf",
+    "static/media/SM.TTF": "/reactive-floating-point-game/static/media/SM.7329d38f9288e991adbd.TTF",
+    "static/media/background.svg": "/reactive-floating-point-game/static/media/background.06ba6b9ba4802f5a5cc1.svg",
+    "static/media/LiquidCrystal-Normal.otf": "/reactive-floating-point-game/static/media/LiquidCrystal-Normal.f71ae6335850fed5110d.otf",
+    "static/media/game_background.svg": "/reactive-floating-point-game/static/media/game_background.b28cfa0a0ca20da398d5.svg",
+    "index.html": "/reactive-floating-point-game/index.html",
+    "main.f17892f7.css.map": "/reactive-floating-point-game/static/css/main.f17892f7.css.map",
+    "main.2400a491.js.map": "/reactive-floating-point-game/static/js/main.2400a491.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f17892f7.css",
+    "static/js/main.2400a491.js"
+  ]
+}
