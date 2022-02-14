@@ -8,13 +8,50 @@
  * Author: Pedro T Freidinger
  */
 
+ /*
+  Liquid Crystal font is a free font made by Chase Babb from dafont.com
+  Chase Babb profile: https://www.dafont.com/pt/profile.php?user=428160
+ */
+@font-face {
+  font-family: 'liquid_crystal';
+  src: local('liquid_crystal'), url(./fonts/liquid_crystal/LiquidCrystal-Normal.otf) format('opentype');
+}
+
+/*
+  Space Marine is a free font made by Joiro Hatagaya and downloaded from dafont.com
+*/
+@font-face {
+  font-family: 'space_marine';
+  src: local('space_marine'), url(./fonts/space_marine/SM.TTF) format('truetype');
+}
+
+/*
+  Exmouth is a free font from the PrimaFont library and downloaded from dafont.com
+*/
+@font-face {
+  font-family: 'exmouth';
+  src: local('exmouth'), url(./fonts/exmouth/exmouth_.ttf) format('truetype');
+}
+
+/*
+  Karmatic Arcade is a free font made by vicfieger from dafont.com
+  Vicfieger profile: https://www.dafont.com/pt/profile.php?user=16024
+*/
+@font-face {
+  font-family: 'karmatic_arcade';
+  src: local('karmatic_arcade'), url(./fonts/karmatic_arcade/ka1.ttf) format('truetype');
+}
+
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url(./img/background.svg);
 }
 
 code {
@@ -34,30 +71,243 @@ code {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+
+  border-radius: 30% / 10%;
+
+  background: rgb(150,150,150);
+  background: radial-gradient(circle, rgba(75,75,75,1) 10%, rgba(0,0,0,1) 70%);
+
+  z-index: -1;
 }
 
 #playing-area {
-  background-color: cadetblue;
+  background-color: rgb(15, 15, 15);
   border: 5px solid black;
+  overflow: hidden;
 }
 
-.player {
-  background-color: brown;
-  border: 1px solid yellow;
-  border-radius: 100%;
+#welcome-screen {
+  background-color: none;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
-.obstacle {
-  background-color: darkblue;
-  box-sizing: border-box;
-  border: 1px solid yellow;
-}
+#welcome-screen__button-box {
+  background-color: none;
 
-#match-stats {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  align-content: space-around;
 }
+
+.player {
+  background-color: rgb(230, 230, 230);
+  border: 1px solid rgb(255, 0, 255);
+  border-radius: 100%;
+
+  box-shadow: 1px 1px 30px 5px rgba(255, 150, 255, 0.5);
+  box-sizing: border-box;
+}
+
+.obstacle {
+  background-color: black;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 50px 1px rgb(87, 0, 0);
+}
+
+@keyframes glow-obstacle {
+  from {
+    box-shadow: 1px 1px 50px 1px rgb(87, 0, 0);
+  }
+  to {
+    box-shadow: 1px 1px 100px 1px rgb(87, 0, 0);
+  }
+}
+
+#playing-area-shell-top {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  column-gap: 15ch;
+}
+
+#score-counter, #difficulty-display {
+  margin-bottom: 25px;
+
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+  
+  color: rgb(255, 0, 255);
+  text-shadow: 0 0 30px rgb(255, 100, 255), 0 0 35px black, 0 0 40px black;
+  font-family: 'karmatic_arcade';
+}
+
+.credits, .credits a {
+  margin-top: 1em;
+
+  color: rgb(255, 0, 255);
+  text-shadow: 0 0 20px rgb(255, 100, 255), 0 0 25px black, 0 0 30px black;
+  font-family: 'karmatic_arcade';
+}
+
+.credits a:hover {
+  color: rgb(0, 0, 0);
+  text-shadow: 0 0 20px rgb(255, 100, 255), 0 0 25px black, 0 0 30px black;
+  font-family: 'karmatic_arcade';
+}
+
+#score, #difficulty {
+  font-family: 'liquid_crystal';
+  color: red;
+  text-shadow: 0 0 20px rgb(255, 50, 50), 0 0 30px rgb(255, 30, 30), 0 0 40px rgb(255, 10, 10);
+  text-align: right;
+
+  box-sizing: border-box;
+  border: 2px solid black;
+
+  background-color: rgb(44, 33, 33);
+
+  padding: 2%;
+}
+
+#score {
+  width: 5ch;
+}
+
+#difficulty {
+  width: 8ch;
+}
+
+#game-logo {
+  width: 9ch;
+  height: 3em;
+
+  color: rgb(230, 230, 230);
+
+  font-family: 'space_marine';
+
+  -webkit-text-stroke: 1px;
+  -webkit-text-stroke-color: rgb(255, 0, 255);
+  text-shadow: 0 0 20px rgb(255, 150, 255), 0 0 30px rgb(255, 100, 255), 0 0 35px black, 0 0 40px black;
+
+  position: relative;
+}
+
+#game-logo__reactive-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+#game-logo__floating-text {
+  position: absolute;
+  top: 0.8em;
+  left: 1ch;
+  z-index: 2;
+}
+
+#game-logo__point-text {
+  position: absolute;
+  top: 1.6em;
+  left: 2ch;
+  z-index: 3;
+}
+
+.game-button {
+  font-family: 'space_marine';
+  border: 1px solid rgb(255, 0, 255);
+
+  background-color: rgb(230, 230, 230);
+  
+}
+
+.game-button:hover, .game-button:focus {
+  box-shadow: 1px 1px 50px 5px rgb(255, 150, 255);
+  box-sizing: border-box;
+}
+
+#credits-screen {
+  color: white;
+  font-family: 'arial';
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#credits-screen__author-div {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.credits-screen__div-title {
+  text-decoration: underline;
+  margin: 1em;
+}
+
+.credits-screen__font-box__font-credits {
+  margin-top: 0.5em;
+}
+
+#welcome-screen__controlls-box {
+  border: 1px solid white;
+  padding: 1ch;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-screen__controll-info {
+  color: white;
+}
+
+.welcome-screen__controll-info__key {
+  font-weight: bold;
+}
+
+#game-area {
+   background-image: url(./img/game_background.svg);
+}
+
+#game-over-screen {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#game-over-screen__title {
+  font-family: 'space_marine';
+
+  -webkit-text-stroke: 1px;
+  -webkit-text-stroke-color: rgb(255, 0, 255);
+  text-shadow: 0 0 20px rgb(255, 150, 255), 0 0 30px rgb(255, 100, 255), 0 0 35px black, 0 0 40px black;
+}
+
+#game-over-screen__text {
+  font-family: 'space_marine';
+  color: white;
+  margin: 1ch;
+  font-size: 1.15em;
+}
+

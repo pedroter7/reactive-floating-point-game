@@ -139,16 +139,22 @@ class Game extends React.Component {
     }
 
     render() {
+        const style = {
+            width: '100%',
+            height: '100%',
+            margin: 0,
+            position: 'relative'
+        };
+
         return (
-            <div width={`${this.props.playingAreaWidth}px`} 
-                height={`${this.props.playingAreaHeight}px`} 
-                style={{position:'relative', margin: 0}} >
+            <div id="game-area" style={style} >
                 <ObstaclesBelt obstacleController={this.obstacleController}
                     onBeltMove={this.onObstaclesBeltMove}
                     size={this.props.playingAreaWidth}
                     speed={this.obstacleMovementSpeed}
                     moving={this.props.getGameRunning() && !this.state.paused}
-                    newObstacleInterval={this.obstacleGenerationFrequency} />
+                    newObstacleInterval={this.obstacleGenerationFrequency}
+                    difficulty={this.state.difficulty} />
                 <Player x={this.state.playerPosition.x}
                     y={this.state.playerPosition.y}
                     diameter={this.playerDiameter}

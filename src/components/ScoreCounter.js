@@ -34,9 +34,19 @@ class ScoreCounter extends React.Component {
     }
 
     render() {
+
+        const textStyle = {
+            fontSize: `${this.props.fontSize}px`
+        };
+
+        const counterStyle = {
+            fontSize: `${this.props.fontSize*1.50}px`,
+            marginLeft: '1ch'
+        }
+
         return (
-        <div id="score-counter">
-            Score: <span id="score">{this.state.score}</span>
+        <div id="score-counter" style={textStyle}>
+            Score <div id="score" style={counterStyle}>{this.state.score}</div>
         </div>);
     }
 

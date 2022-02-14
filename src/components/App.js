@@ -15,14 +15,15 @@ import WelcomeScreen from './WelcomeScreen';
 import Game from './Game';
 import GameOverScreen from './GameOverScreen';
 import Observable from '../logic/Observable';
-import MatchStats from './MatchStats';
-import Credits from './Credits';
+import { PlayingAreaShellBottom, PlayingAreaShellTop } from './playingAreaShell';
+import CreditsScreen from './CreditsScreen';
 
 class CurrentScreenEnum {
 
   static WELCOME_SCREEN = new CurrentScreenEnum();
   static GAME_SCREEN = new CurrentScreenEnum();
   static GAMEOVER_SCREEN = new CurrentScreenEnum();
+  static CREDITS_SCREEN = new CurrentScreenEnum();
 
 }
 
@@ -52,6 +53,9 @@ class App extends React.Component {
     this.onGameRestart = this.onGameRestart.bind(this);
     this.onScoreUpdate = this.onScoreUpdate.bind(this);
     this.onDifficultyChange = this.onDifficultyChange.bind(this);
+    this.onSeeCreditsScreen = this.onSeeCreditsScreen.bind(this);
+    this.buildCreditsScreen = this.buildCreditsScreen.bind(this);
+    this.onBackFromCreditsScreen = this.onBackFromCreditsScreen.bind(this);
   }
 
   getGameRunning() {
@@ -74,11 +78,20 @@ class App extends React.Component {
   }
 
   buildWelcomeScreen() {
-    return (<WelcomeScreen onPlay={this.doPlay} />);
+    return (<WelcomeScreen onPlay={this.doPlay} 
+                  playingAreaHeight={this.playingAreaHeight} 
+                  playingAreaWidth={this.playingAreaWidth}
+                  onSeeCredits={this.onSeeCreditsScreen} />);
   }
 
   buildGameOverScreen() {
-    return (<GameOverScreen onGameRestart={this.onGameRestart} />);
+    return (<GameOverScreen onGameRestart={this.onGameRestart}
+                  playingAreaHeight={this.playingAreaHeight} 
+                  playingAreaWidth={this.playingAreaWidth} />);
+  }
+
+  buildCreditsScreen() {
+    return (<CreditsScreen onBack={this.onBackFromCreditsScreen} />);
   }
 
   doPlay(gameIsRestarting=false) {
@@ -91,6 +104,14 @@ class App extends React.Component {
 
   onGameRestart() {
     this.doPlay(true);
+  }
+
+  onSeeCreditsScreen() {
+    this.setState({gameRunning: false, currentScreen: CurrentScreenEnum.CREDITS_SCREEN});
+  }
+
+  onBackFromCreditsScreen() {
+    this.setState({gameRunning: false, currentScreen: CurrentScreenEnum.WELCOME_SCREEN});
   }
 
   onScoreUpdate(newScore) {
@@ -111,21 +132,33 @@ class App extends React.Component {
         currentScreen = this.buildGameOverScreen();
         break;
 
+      case CurrentScreenEnum.CREDITS_SCREEN:
+        currentScreen = this.buildCreditsScreen();
+        break;
+
     };
 
+    const style = {
+      paddingTop: this.playingAreaHeight*0.05,
+      paddingBottom: this.playingAreaHeight*0.05,
+      paddingLeft: this.playingAreaWidth*0.025,
+      paddingRight: this.playingAreaWidth*0.025
+    }
+
     return (
-      <div className="App">
-        <MatchStats scoreObservable={this.scoreObservable}
+      <div className="App" style={style}>
+        <PlayingAreaShellTop scoreObservable={this.scoreObservable}
           difficultyObservable={this.difficultyObservable}
-          width={this.playingAreaWidth} />
+          width={this.playingAreaWidth}
+          height={Math.round(this.playingAreaHeight*0.045)} />
         <PlayingArea
           width={this.playingAreaWidth}
-          height={this.playingAreaHeight}>
+          height={this.playingAreaHeight} >
 
             {currentScreen}
 
         </PlayingArea>
-        <Credits />
+        <PlayingAreaShellBottom />
       </div>
     );
   }

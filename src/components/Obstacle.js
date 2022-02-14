@@ -9,6 +9,8 @@
  */
 
 import React from "react";
+import { DifficultyEnum } from "../logic/difficultyRules";
+import PlayerScoreController from "../logic/playerScoreModel";
 
 class Obstacle extends React.Component {
 
@@ -23,6 +25,10 @@ class Obstacle extends React.Component {
             position: 'absolute',
             top: `${this.props.y}px`,
             left: `${this.props.x}px`
+        }
+
+        if (this.props.difficulty == DifficultyEnum.EXTREME) {
+            style.animation = 'glow-obstacle 1s infinite alternate';
         }
 
         return (

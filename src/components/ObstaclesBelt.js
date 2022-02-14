@@ -90,7 +90,8 @@ class ObstaclesBelt extends React.Component {
                     y={o.y}
                     x={o.x}
                     cssTransform={o.cssTransform}
-                    key={o.id} />)
+                    key={o.id}
+                    difficulty={this.props.difficulty} />)
             }
         </div>);
     }

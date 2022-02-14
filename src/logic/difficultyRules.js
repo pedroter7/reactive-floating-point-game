@@ -20,9 +20,9 @@ class DifficultyEnum {
 function getDifficulty(currentScore) {
     if (currentScore < 30) {
         return DifficultyEnum.EASY;
-    } else if (currentScore < 100) {
+    } else if (currentScore < 50) {
         return DifficultyEnum.MEDIUM;
-    } else if (currentScore < 300) {
+    } else if (currentScore < 80) {
         return DifficultyEnum.HARD;
     }
 

@@ -60,11 +60,15 @@ class Player extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('keydown', this.onKeyPress);
+        if (!this.props.displayMode) {
+            window.addEventListener('keydown', this.onKeyPress);
+        }
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.onKeyPress);
+        if (!this.props.displayMode) {
+            window.removeEventListener('keydown', this.onKeyPress);
+        }
     }
 
     render() {

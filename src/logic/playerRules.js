@@ -8,7 +8,7 @@
  * Author: Pedro T Freidinger
  */
 
-const PLAYER_VERTICAL_STEP = 15; // px
+const PLAYER_VERTICAL_STEP = 10; // px
 
 function playerNextPosition(currentPosition, moveType, playerDimensions, playingAreaDimensions) {
     const nextPosition = {

@@ -51,9 +51,18 @@ class DifficultyDisplay extends React.Component {
                 break;
         }
 
+        const textStyle = {
+            fontSize: `${this.props.fontSize}px`
+        };
+
+        const counterStyle = {
+            fontSize: `${this.props.fontSize*1.50}px`,
+            marginLeft: '1ch'
+        }
+
         return (
-            <div id="difficulty-display">
-                Difficulty: <span id="difficulty">{difficultyText}</span>
+            <div id="difficulty-display" style={textStyle}>
+                Difficulty <div id="difficulty" style={counterStyle}>{difficultyText}</div>
             </div>
         );
 
