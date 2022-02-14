@@ -56,17 +56,17 @@ function obstacleGenerationAlgorithm({ lastObstacle, playingAreaDimensions,
     let height = undefined;
     let y = undefined;
 
-    if (lastObstacle == null) {
+    if (lastObstacle === null) {
         height = randomInt(obstacleSpaceMax, playingAreaDimensions.height-obstacleSpaceMin);
-        y = obstaclePin == 0 ? 0 : playingAreaDimensions.height - height;
+        y = obstaclePin === 0 ? 0 : playingAreaDimensions.height - height;
     } else {
         // Player average vertical movement speed
         let averageHitsPerSecond = undefined;
-        if (difficulty == DifficultyEnum.EASY) {
+        if (difficulty === DifficultyEnum.EASY) {
             averageHitsPerSecond = 0.002;
-        } else if (difficulty == DifficultyEnum.MEDIUM) {
+        } else if (difficulty === DifficultyEnum.MEDIUM) {
             averageHitsPerSecond = 0.0025;
-        } else if (difficulty == DifficultyEnum.HARD) {
+        } else if (difficulty === DifficultyEnum.HARD) {
             averageHitsPerSecond = 0.003;
         } else {
             averageHitsPerSecond = 0.004;
@@ -78,11 +78,11 @@ function obstacleGenerationAlgorithm({ lastObstacle, playingAreaDimensions,
 
         // Define how smaller the diagonal between the obstacles will be based on the current difficulty
         let fraction = undefined;
-        if (difficulty == DifficultyEnum.EASY) {
+        if (difficulty === DifficultyEnum.EASY) {
             fraction = randomFloat(0.3, 0.5);
-        } else if (difficulty == DifficultyEnum.MEDIUM) {
+        } else if (difficulty === DifficultyEnum.MEDIUM) {
             fraction = randomFloat(0.5, 0.7);
-        } else if (difficulty == DifficultyEnum.HARD) {
+        } else if (difficulty === DifficultyEnum.HARD) {
             fraction = randomFloat(0.7, 0.9);
         } else {
             fraction = randomFloat(0.9, 1);
@@ -93,7 +93,7 @@ function obstacleGenerationAlgorithm({ lastObstacle, playingAreaDimensions,
         let lastObstaclePinning = undefined;
         
         // Define last obstacle pinning
-        if (lastObstacle.y == 0) {
+        if (lastObstacle.y === 0) {
             // Pinned up
             referenceY = lastObstacle.height;
             lastObstaclePinning = 0;
@@ -104,10 +104,10 @@ function obstacleGenerationAlgorithm({ lastObstacle, playingAreaDimensions,
         }
 
         // Prevent having too many obstacles pinned to the same direction
-        if (lastObstaclePinning == obstaclePin) {
+        if (lastObstaclePinning === obstaclePin) {
             followedObstaclesInSameDirection++;
             if (followedObstaclesInSameDirection > 2) {
-                obstaclePin = obstaclePin == 0 ? 1 : 0;
+                obstaclePin = obstaclePin === 0 ? 1 : 0;
             }
         } else {
             followedObstaclesInSameDirection = 0;
@@ -122,10 +122,10 @@ function obstacleGenerationAlgorithm({ lastObstacle, playingAreaDimensions,
             y = referenceY - maxAverageVerticalMovement;
         } else {
             // random
-            y = randomInt(0,1) == 0 ? referenceY + maxAverageVerticalMovement : referenceY - maxAverageVerticalMovement;
+            y = randomInt(0,1) === 0 ? referenceY + maxAverageVerticalMovement : referenceY - maxAverageVerticalMovement;
         }
 
-        if (obstaclePin == 0) {
+        if (obstaclePin === 0) {
             // Pinned up
             height = y;
             y = 0;
@@ -149,7 +149,7 @@ class ObstacleController {
     static instance = null;
 
     static getInstance() {
-        if (ObstacleController.instance == null)
+        if (ObstacleController.instance === null)
             ObstacleController.instance = new ObstacleController();
         return ObstacleController.instance;
     }
@@ -176,7 +176,7 @@ class ObstacleController {
     }
 
     generate() {
-        this._generationParams.lastObstacle = this._model.obstacles.length == 0 ? null : this._model.obstacles[this._model.obstacles.length-1];
+        this._generationParams.lastObstacle = this._model.obstacles.length === 0 ? null : this._model.obstacles[this._model.obstacles.length-1];
         const newObstacle = obstacleGenerationAlgorithm(this._generationParams);
 
         newObstacle.id = this._model.idCounter++;

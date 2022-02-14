@@ -27,7 +27,7 @@ function playerNextPosition(currentPosition, moveType, playerDimensions, playing
     }
 
     if (movementOutOfBounds(nextPosition, playerDimensions, playingAreaDimensions)) {
-        if (moveType.toUpperCase() == 'UP') nextPosition.y = 0 + playerDimensions.radius;
+        if (moveType.toUpperCase() === 'UP') nextPosition.y = 0 + playerDimensions.radius;
         else nextPosition.y = playingAreaDimensions.height - playerDimensions.radius;
     }
 

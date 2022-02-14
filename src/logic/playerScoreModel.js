@@ -22,7 +22,7 @@ class PlayerScoreController {
     static _instance = null;
 
     static getInstance(obstacleController) {
-        if (PlayerScoreController._instance == null)
+        if (PlayerScoreController._instance === null)
             PlayerScoreController._instance = new PlayerScoreController(obstacleController);
 
         return PlayerScoreController._instance;

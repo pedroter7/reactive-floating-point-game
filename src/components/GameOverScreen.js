@@ -38,7 +38,7 @@ class GameOverScreen extends React.Component {
     }
 
     handleKeyDown(e) {
-        if (e.code == 'Enter') this.onGameRestart();
+        if (e.code === 'Enter') this.onGameRestart();
     }
 
     componentDidMount() {

@@ -26,7 +26,7 @@ class WelcomeScreen extends React.Component {
     }
 
     handleKeyDown(e) {
-        if (e.code == 'Enter') this.handlePlayClick();
+        if (e.code === 'Enter') this.handlePlayClick();
     }
 
     componentDidMount() {

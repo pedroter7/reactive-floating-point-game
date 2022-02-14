@@ -126,9 +126,9 @@ class Game extends React.Component {
         const collided = this.testPlayerCollision(this.state.playerPosition);
         if (!collided) {
             const newScore = this.playerScoreController.updateScore(this.state.playerPosition);
-            if (newScore != this.state.playerScore) {
+            if (newScore !== this.state.playerScore) {
                 const difficulty = getDifficulty(newScore);
-                if (difficulty != this.state.difficulty) {
+                if (difficulty !== this.state.difficulty) {
                     this.obstacleController.updateObstacleGenerationDifficulty(difficulty);
                     this.props.onDifficultyChange(difficulty);
                 }
